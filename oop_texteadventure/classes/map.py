@@ -1,5 +1,5 @@
-from Classes.room import Room
-from Data.room_data import rooms
+from classes.room import Room
+from data.room_data import rooms
 
 
 class Map:

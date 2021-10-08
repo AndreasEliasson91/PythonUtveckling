@@ -2,9 +2,9 @@ import pickle
 from os import listdir
 from typing import Optional
 
-from Classes.map import Map
-from Classes.player import Player
-from Classes.player_position import PlayerPosition
+from classes.map import Map
+from classes.player import Player
+from classes.player_position import PlayerPosition
 
 
 class Game:
@@ -97,5 +97,5 @@ class Game:
 
     @staticmethod
     def list_save_files() -> list[str]:
-        files = [f.replace(".sav", "") for f in listdir("./SaveFiles") if f.endswith(".sav")]
+        files = [f.replace(".sav", "") for f in listdir("./savefiles") if f.endswith(".sav")]
         return files

@@ -1,5 +1,5 @@
-from Classes.item import Item
-from Data.items_data import items
+from classes.item import Item
+from data.items_data import items
 
 
 class Room:
