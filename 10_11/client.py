@@ -1,7 +1,26 @@
 import socket
+import threading
 
 HOST = '127.0.0.1'
 PORT = 32195
+
+running = True
+
+
+def sender(client_socket):
+    global running
+    while running:
+        message = input()
+        if message.lower() == '!quit':
+            running = False
+        message = message.encode('utf-8')
+        client_socket.sendall(message)
+
+
+def receiver(client_socket):
+    while running:
+        message = client_socket.recv(1024).decode('utf-8')
+        print(message)
 
 
 def main():
@@ -12,13 +31,14 @@ def main():
     name = bytes(input(name_question), 'utf-8')
     client_socket.sendall(name)
 
-    while True:
-        out_message = input('>> ')
-        out_message = out_message.encode('utf-8')
-        client_socket.sendall(out_message)
+    sender_thread = threading.Thread(target=sender, args=(client_socket,))
+    receiver_thread = threading.Thread(target=receiver, args=(client_socket,))
 
-        in_message = client_socket.recv(1024).decode('utf-8')
-        print(in_message)
+    sender_thread.start()
+    receiver_thread.start()
+
+    sender_thread.join()
+    receiver_thread.join()
 
     client_socket.close()
 

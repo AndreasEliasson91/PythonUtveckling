@@ -33,6 +33,17 @@ def client_thread(client_socket):
     while True:
         message = client_socket.recv(1024).decode('utf-8')
 
+        if message.lower() == '!quit':
+            client_list.remove(client_socket)
+
+            data_dict = {
+                'client_socket': client_socket,
+                'username': username,
+                'message': 'Has left the chat'
+            }
+
+            message_queue.put(data_dict)
+
         data_dict = {
             'client_socket': client_socket,
             'username': username,
@@ -48,6 +59,8 @@ def main():
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # AF_INET = IPv4, SOCK_STREAM = TCP
     server_socket.bind((HOST, PORT))  # Bind the socket to the address
     server_socket.listen()  # Enable server to accept connections
+
+    threading.Thread(target=broadcast_thread).start()
 
     while True:
         # Blocking call - The program stops here until something happens
