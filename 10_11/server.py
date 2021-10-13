@@ -43,7 +43,8 @@ def client_thread(client_socket):
             }
 
             message_queue.put(data_dict)
-
+            break
+            
         data_dict = {
             'client_socket': client_socket,
             'username': username,
